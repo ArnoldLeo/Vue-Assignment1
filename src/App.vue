@@ -19,17 +19,38 @@
         </div>
       </div>
     </div>
-    {{totalPrice()}}
+    {{ totalPrice() }}
     <div class="nav__cart">
       <button class="cartBtn" @click="showCart = !showCart">Cart</button>
       <span class="total-quantity">{{ totalQuantity }}</span>
-      <div v-if="showCart && finalPrice>0" class="cart-dropdown">
-        <ol class="cart-dropdown__list">
-          <li v-for="product in cart" :key="product.id">
-            {{ product.name }} x {{ product.quantity }}=&#8377;{{product.total }}<button class="remove" @click="updateCart(product, 'delete')">Remove</button>
-          </li>
-        </ol>
-        Total=&#8377;{{finalPrice}};
+      <div v-if="showCart && finalPrice > 0" class="cart-dropdown">
+        <table class="tableHead">
+          <tr>
+            <th width="20%">Prouct Name</th>
+            <th width="20%">Price</th>
+            <th width="20%">Quantity</th>
+            <th width="20%">Total</th>
+            <th width="20%">Remove</th>
+          </tr>
+        </table>
+        <table 
+          class="cart-dropdown__list"
+          v-for="product in cart"
+          :key="product.id"
+        >
+            <tr>
+              <td width="20%">{{ product.name }}</td>
+              <td width="20%">&#8377;{{ product.price }}</td>
+              <td width="20%">{{ product.quantity }}</td>
+              <td width="20%">&#8377;{{ product.total }}</td>
+              <td width="20%">
+                <button class="remove" @click="updateCart(product, 'delete')">
+                  Remove
+                </button>
+              </td>
+            </tr>
+        </table>
+       <div class="bold"> Total=&#8377;{{ finalPrice }}</div>
       </div>
     </div>
   </div>
@@ -50,7 +71,7 @@ export default {
             "<li>512 GB ROM</li><li>15.49 cm (6.1 inch) Super Retina XDR Display</li><li>12MP + 12MP | 12MP Front Camera</li><li>A15 Bionic Chip Processo</li>",
           quantity: 0,
           price: 110000,
-          total:0,
+          total: 0,
           status: false,
         },
         {
@@ -61,9 +82,9 @@ export default {
           description:
             "<li>8 GB RAM | 256 GB ROM</li><li>17.02 cm (6.7 inch) Full HD+ Display</li><li>12MP + 12MP | 10MP Front Camera</li><li>3300 mAh Lithium-ion Battery</li><li>Qualcomm Snapdragon 888 Octa-Core Processor</li>",
           quantity: 0,
-          price:90000,
+          price: 90000,
           status: false,
-          total:0,
+          total: 0,
         },
         {
           id: 3,
@@ -75,7 +96,7 @@ export default {
           quantity: 0,
           price: 55000,
           status: false,
-          total:0,
+          total: 0,
         },
       ],
       showCart: false,
@@ -92,10 +113,7 @@ export default {
       );
     },
     finalPrice() {
-      return this.products.reduce(
-        (total, product) => total + product.total,
-        0
-      );
+      return this.products.reduce((total, product) => total + product.total, 0);
     },
   },
   methods: {
@@ -108,20 +126,20 @@ export default {
             }
           } else if (updateType === "add") {
             this.products[i].quantity++;
+          } else {
+            this.products[i].quantity = 0;
           }
-            else{
-              this.products[i].quantity=0;
-            }
           break;
         }
       }
     },
-    totalPrice(){
-      for (let i = 0; i < this.products.length; i++){
-        this.products[i].total=(this.products[i].quantity*this.products[i].price);
+    totalPrice() {
+      for (let i = 0; i < this.products.length; i++) {
+        this.products[i].total =
+          this.products[i].quantity * this.products[i].price;
       }
       // console.log(this.products)
-    }
+    },
   },
 };
 </script>
@@ -223,11 +241,11 @@ input {
   font-size: 1.3rem;
   overflow: auto;
   padding: 0 1rem;
-  width: 200px;
+  width: 70%;
   margin: 0 auto;
 }
 .cart-dropdown__list {
- margin:10px;
+  margin: 10px;
 }
 .cart__quantity {
   border: 2px solid grey;
@@ -245,7 +263,28 @@ input {
   position: relative;
   left: -20px;
 }
-ol{
-  text-decoration: peru;
+table{
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px auto;
+}
+td{
+  border: 1px solid #949090;
+  text-align: left;
+  padding: 8px;
+}
+th{
+  border: 1px solid #969393;
+  text-align: left;
+  padding: 5px;
+}
+.tableHead{
+  position: relative;
+  left: 10px;
+  margin: 10px auto;
+}
+.bold{
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>
